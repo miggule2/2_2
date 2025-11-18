@@ -26,6 +26,9 @@ public class Player {
     @Column(nullable = false)
     private Integer salary=0;
 
+    @Column(nullable = false)
+    private boolean isAlien = false;
+
     // 이미지를 위한 필드(속성)
     @Column
     private String imageUrl;
@@ -34,11 +37,12 @@ public class Player {
     }
 
     // 초기화를 위한 생성자
-    public Player(Team team, String name, String position, Integer salary, String imageUrl){
+    public Player(Team team, String name, String position, Integer salary, String imageUrl, boolean isAlien){
         this.team = team;
         this.name = name;
         this.position = position;
         this.salary = salary;
+        this.isAlien = isAlien;
         this.imageUrl = imageUrl;
     }
 
