@@ -14,7 +14,7 @@ public class Player {
     private Team team;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userAccountId", unique = true)
+    @JoinColumn(name="userAccount", unique = true)
     private User user;
 
     @Column(nullable = false, length = 30)

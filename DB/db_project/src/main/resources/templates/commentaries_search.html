@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>선수 코멘터리 검색</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .comment-item { border: 1px solid #ddd; border-radius: 5px; margin-bottom: 15px; padding: 15px; }
+    .player-link { color: #28a745; text-decoration: none; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<h1>선수 코멘터리 검색</h1>
+<hr/>
+
+<form th:action="@{'/commentaries/search'}" method="get" style="margin-bottom: 20px;">
+  <label>선수 이름 키워드:</label>
+  <input type="text" name="inputString" th:value="${searchPlayer}" placeholder="선수 이름을 입력하세요">
+  <button type="submit">검색</button>
+</form>
+
+<h2 th:text="${listTitle}">검색 결과</h2>
+
+<div th:if="${searchPlayer != null and commentaries.isEmpty()}">
+  <p>키워드 '<span th:text="${searchPlayer}"></span>'에 해당하는 코멘터리가 없습니다.</p>
+</div>
+
+<div th:each="comment : ${commentaries}" class="comment-item">
+  <div class="comment-header">
+    <span th:if="${comment.isOfficial}" class="official-mark">⭐ 공식</span>
+
+    대상 선수:
+    <a th:href="@{'/commentaries/players/' + ${comment.playerId}}" th:text="${comment.playerName}" class="player-link">선수명</a>
+  </div>
+
+  <p th:text="${comment.comment}">코멘터리 내용</p>
+  <small>작성자: <span th:text="${comment.userName}"></span></small> |
+  <small>작성 시간: <span th:text="${comment.createdTime}"></span></small>
+
+</div>
+
+</body>
+</html>

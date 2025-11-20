@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="${player.name} + ' 선수 코멘터리'">선수명 코멘터리</title>
+  <style>
+    .official-comment { background-color: #e6f7ff; border-left: 5px solid #007bff; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .general-comment { background-color: #f8f8f8; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+    .player-img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; margin-right: 20px;}
+    .official-mark { color: #007bff; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<div class="player-info">
+  <img th:src="@{'/resources/' + ${player.imageUrl}}" alt="선수 이미지" class="player-img" onerror="this.src='/resources/default.jpg'"/>
+  <div>
+    <h1 th:text="${player.name} + ' 선수'">선수명</h1>
+    <p><strong>소속 팀:</strong> <span th:text="${player.team.teamName}">팀명</span> |
+      <strong>포지션:</strong> <span th:text="${player.position}">포지션</span> |
+      <strong>가상 가격:</strong> <span th:text="${player.salary} + '억 원'">가격</span></p>
+  </div>
+</div>
+
+<hr/>
+
+<div th:if="${isPlayerAccountOwner}">
+  <h2>📝 공식 코멘터리 작성</h2>
+  <form th:action="@{/commentaries}" method="post">
+    <input type="hidden" name="playerId" th:value="${player.playerId}"/>
+    <textarea name="comment" rows="3" cols="60" placeholder="선수 본인의 소감을 남겨주세요." required></textarea><br/>
+    <button type="submit" style="background-color: #007bff; color: white; padding: 8px 15px; border: none; border-radius: 4px; margin-top: 5px;">
+      ⭐ 공식 코멘터리 등록
+    </button>
+  </form>
+  <hr/>
+</div>
+
+<h2>💬 모든 코멘터리</h2>
+<div th:each="comment : ${commentaries}">
+  <div th:class="${comment.official} ? 'official-comment' : 'general-comment'">
+
+    <div class="comment-header">
+      <span th:if="${comment.official}" class="official-mark">✅ 공식 계정</span>
+      <span th:text="${comment.userName}">작성자</span>
+    </div>
+
+    <p th:text="${comment.comment}" style="margin-top: 5px;"></p>
+    <small>작성 시간: <span th:text="${comment.createdTime}"></span></small>
+
+    <span th:if="${currentUserId != null and comment.authorId == currentUserId}">
+                <form th:action="@{/commentaries/delete}" method="post" style="display: inline; margin-left: 10px;">
+                    <input type="hidden" name="commentId" th:value="${comment.commentId}"/>
+                    <button type="submit" style="color: red; background: none; border: none; cursor: pointer;">[삭제]</button>
+                </form>
+            </span>
+  </div>
+</div>
+
+<div th:if="${commentaries.isEmpty()}">
+  <p>등록된 코멘터리가 없습니다.</p>
+</div>
+
+</body>
+</html>
