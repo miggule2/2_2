@@ -7,31 +7,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class UserController {
-
+public class AuthController {
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public AuthController(UserService userService) {
         this.userService = userService;
     }
 
-    // 회원가입 폼을 보여주는 페이지
+    // GET /signup: 회원가입 페이지 반환
     @GetMapping("/signup")
-    public String showSignupForm() {
-        return "signup"; // signup.html파일 찾기
+    public String showSignupForm(){
+        return "signup";
     }
 
-    // 회원가입 폼 데이터를 받아서 처리
+    // POST /signup: 회원가입 요청을 처리
     @PostMapping("/signup")
-    public String processSignup(
+    public String signup(
             @RequestParam String username,
             @RequestParam String password,
-            @RequestParam String email
-    ) {
-        // 회원가입 로직 실행
+            @RequestParam String email){
         userService.signup(username, password, email);
 
-        // 회원가입 성공 시, 로그인 페이지나 메인 페이지로 리다이렉트
-        return "redirect:/"; // (루트 페이지로 보냄)
+        return "redirect:/login";
+    }
+
+    // GET /login: 로그인 페이지 반환
+    @GetMapping("/login")
+    public String showLoginForm(){
+        return "login";
     }
 }
