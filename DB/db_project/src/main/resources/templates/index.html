@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>⚾ DB 판타지 리그 - 홈</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; text-align: center; }
+        .header { background-color: #28a745; color: white; padding: 20px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; font-size: 2.5em; }
+        .auth-controls { position: absolute; top: 20px; right: 20px; }
+        .auth-controls a { text-decoration: none; color: white; margin-left: 15px; padding: 8px 15px; border-radius: 4px; background-color: #007bff; transition: background-color 0.3s; }
+        .auth-controls a:hover { background-color: #0056b3; }
+
+        .welcome-message { margin-top: 20px; font-size: 1.2em; color: #555; }
+        .main-grid { display: flex; justify-content: center; flex-wrap: wrap; padding: 40px 20px; gap: 30px; }
+        .feature-card { background-color: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 250px; padding: 25px; transition: transform 0.2s, box-shadow 0.2s; text-align: center; cursor: pointer; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+        .feature-card h2 { color: #28a745; margin-top: 0; }
+        .feature-card p { color: #777; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>DB 판타지 리그 ⚾</h1>
+
+    <div class="auth-controls">
+        <div th:if="${!isAuthenticated}">
+            <a th:href="@{/login}">로그인</a>
+            <a th:href="@{/signup}" style="background-color: #20c997;">회원가입</a>
+        </div>
+        <div th:if="${isAuthenticated}">
+            <span th:text="${username} + '님 환영합니다!'" style="color: white; margin-right: 15px;"></span>
+            <a th:href="@{/logout}">로그아웃</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="welcome-message" th:if="${!isAuthenticated}">
+    <p>서비스 이용을 위해 로그인해주세요. (모든 기능은 회원 전용입니다)</p>
+</div>
+
+<div class="main-grid">
+
+    <a th:href="@{/commentaries/team}" class="feature-card">
+        <h2>💬 선수 코멘터리</h2>
+        <p>선수들의 공식 의견과 유저들의 반응을 확인하세요.</p>
+    </a>
+
+    <a th:href="@{/teams/list}" class="feature-card">
+        <h2>🏆 판타지 팀 목록</h2>
+        <p>다른 유저들의 팀 구성과 샐러리캡 전략을 살펴보세요.</p>
+    </a>
+
+    <a th:href="@{/cards/shop}" class="feature-card">
+        <h2>📦 카드팩 상점</h2>
+        <p>한정 카드팩을 구매하고 동시성 제어 트랜잭션을 경험하세요.</p>
+    </a>
+
+    <a th:href="@{/teams/roster}" class="feature-card">
+        <h2>⚙️ 로스터 관리 & 챌린지</h2>
+        <p>나만의 팀을 구성하고 샐러리캡 유효성 검증을 해보세요.</p>
+    </a>
+
+</div>
+
+</body>
+</html>
